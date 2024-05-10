@@ -1,0 +1,36 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{D03C210C-103E-4E71-B1C6-F5A67CCB39B5}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="utils4d.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="utils4d">
+        <MSBuild Projects="utils4d.dproj"/>
+    </Target>
+    <Target Name="utils4d:Clean">
+        <MSBuild Projects="utils4d.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="utils4d:Make">
+        <MSBuild Projects="utils4d.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="utils4d"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="utils4d:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="utils4d:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
