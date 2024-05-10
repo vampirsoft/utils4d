@@ -30,17 +30,19 @@ type
     TestValue2        = 'test value 2';
     TestValue3        = 'test value 3';
     TestValueNotFound = 'not found';
-    
+
   private
     FArray: TArray<string>;
 
-  protected
+  strict protected
     procedure SetUp; override;
-    procedure TearDown; override;
 
   published
     procedure binary_search_should_return_index_of_item_in_sorted_array;
     procedure binary_search_should_not_return_index_of_item_in_sorted_array_if_item_not_found;
+
+    procedure search_should_return_index_of_item_in_array;
+    procedure search_should_not_return_index_of_item_in_array_if_item_not_found;
   end;
 
 implementation
@@ -60,7 +62,7 @@ begin
   const ActualResult = TArray.BinarySearch<string>(
     FArray,
     function(const Item: string): Integer
-    begin    
+    begin
       Result := TComparer<string>.Default.Compare(Item, TestValueNotFound);
     end,
     ActualIndex
@@ -80,7 +82,7 @@ begin
   const ActualResult = TArray.BinarySearch<string>(
     FArray,
     function(const Item: string): Integer
-    begin    
+    begin
       Result := TComparer<string>.Default.Compare(Item, TestValue2);
     end,
     ActualIndex
@@ -90,17 +92,48 @@ begin
   CheckEquals(   1, ActualIndex);
 end;
 
+procedure TArrayHelperTests.search_should_not_return_index_of_item_in_array_if_item_not_found;
+var
+  ActualIndex: Integer;
+
+begin
+  const ActualResult = TArray.Search<string>(
+    FArray,
+    function(const Item: string): Boolean
+    begin
+      Result := TEqualityComparer<string>.Default.Equals(Item, TestValueNotFound);
+    end,
+    ActualIndex
+  );
+
+  CheckEquals(False, ActualResult);
+  CheckEquals(   -1, ActualIndex);
+end;
+
+procedure TArrayHelperTests.search_should_return_index_of_item_in_array;
+var
+  ActualIndex: Integer;
+
+begin
+  const ActualResult = TArray.Search<string>(
+    FArray,
+    function(const Item: string): Boolean
+    begin
+      Result := TEqualityComparer<string>.Default.Equals(Item, TestValue2);
+    end,
+    ActualIndex
+  );
+
+  CheckEquals(True, ActualResult);
+  CheckEquals(   2, ActualIndex);
+end;
+
 procedure TArrayHelperTests.SetUp;
 begin
   FArray := [TestValue3, TestValue1, TestValue2];
 end;
 
-procedure TArrayHelperTests.TearDown;
-begin
-
-end;
-
 initialization
   RegisterTest(TArrayHelperTests.Suite);
-  
+
 end.
