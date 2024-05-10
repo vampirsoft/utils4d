@@ -24,6 +24,7 @@ type
 
   TArrayHelper = class helper for TArray
   public type
+    TSearchPredicate<T> = reference to function(const Item: T): Boolean;
     TBinarySearchComparer<T> = reference to function(const Item: T): Integer;
 
   public
@@ -31,6 +32,12 @@ type
       out FoundIndex: Integer;
       const StartIndex, Count: Integer): Boolean; overload; static;
     class function BinarySearch<T>(const Values: array of T; const Compare: TBinarySearchComparer<T>;
+      out FoundIndex: Integer): Boolean; overload; static;
+
+    class function Search<T>(const Values: array of T; const Predicate: TSearchPredicate<T>;
+      out FoundIndex: Integer;
+      const StartIndex, Count: Integer): Boolean; overload; static;
+    class function Search<T>(const Values: array of T; const Predicate: TSearchPredicate<T>;
       out FoundIndex: Integer): Boolean; overload; static;
   end;
 
@@ -87,6 +94,36 @@ class function TArrayHelper.BinarySearch<T>(const Values: array of T; const Comp
   out FoundIndex: Integer): Boolean;
 begin
   Result := BinarySearch<T>(Values, Compare, FoundIndex, Low(Values), Length(Values));
+end;
+
+class function TArrayHelper.Search<T>(const Values: array of T; const Predicate: TSearchPredicate<T>;
+  out FoundIndex: Integer; const StartIndex, Count: Integer): Boolean;
+begin
+  if
+    (StartIndex < Low(Values)) or
+    ((StartIndex > High(Values)) and (Count > 0)) or
+    (StartIndex + Count - 1 > High(Values)) or
+    (Count < 0) or
+    (StartIndex + Count < 0)
+  then
+  begin
+    ErrorArgumentOutOfRange;
+  end;
+
+  for var Index := StartIndex to Count - 1 do
+  begin
+    FoundIndex := Index;
+    if Predicate(Values[Index]) then Exit(True);
+  end;
+
+  FoundIndex := -1;
+  Result := False;
+end;
+
+class function TArrayHelper.Search<T>(const Values: array of T; const Predicate: TSearchPredicate<T>;
+  out FoundIndex: Integer): Boolean;
+begin
+  Result := Search<T>(Values, Predicate, FoundIndex, Low(Values), Length(Values));
 end;
 
 end.
