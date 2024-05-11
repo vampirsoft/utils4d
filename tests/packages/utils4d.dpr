@@ -19,7 +19,9 @@ program utils4d;
 
 uses
   DUnitTestRunner,
+  Utils.ExtArray in '..\..\sources\Utils.ExtArray.pas',
   Utils.Arrays.Helper in '..\..\sources\Utils.Arrays.Helper.pas',
+  Utils.ExtArray.Tests in '..\sources\Utils.ExtArray.Tests.pas',
   Utils.Arrays.Helper.Tests in '..\sources\Utils.Arrays.Helper.Tests.pas';
 
 {$R *.RES}
