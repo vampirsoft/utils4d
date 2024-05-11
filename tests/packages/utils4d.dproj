@@ -154,8 +154,12 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
+        <DCCReference Include="..\..\sources\Utils.ExtArray.pas"/>
         <DCCReference Include="..\..\sources\Utils.Arrays.Helper.pas"/>
-        <DCCReference Include="..\sources\Utils.Arrays.Helper.Tests.pas"/>
+        <DCCReference Include="..\sources\Utils.ExtArray.Tests.pas"/>
+        <DCCReference Include="..\sources\Utils.Arrays.Helper.Tests.pas">
+            <Form>$R *.RES</Form>
+        </DCCReference>
         <None Include="..\includes\Common.Tests.inc"/>
         <None Include="..\..\includes\Common.inc"/>
         <BuildConfiguration Include="Base">

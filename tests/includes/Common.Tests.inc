@@ -12,6 +12,10 @@
 {$IF NOT DEFINED(COMMON_TESTS_INC)}
 {$DEFINE COMMON_TESTS_INC}
 
+// Если используется QuickLib (https://github.com/exilon/QuickLib),
+// необходимо включить эту опцию
+//{$DEFINE USE_QUICK_LIB}
+
 // Тесты в коносле
 {$DEFINE CONSOLE_TESTRUNNER}
 
