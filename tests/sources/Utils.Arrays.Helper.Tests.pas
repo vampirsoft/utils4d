@@ -16,7 +16,8 @@ unit Utils.Arrays.Helper.Tests;
 interface
 
 uses
-  TestFramework,
+  DUnitX.TestFramework,
+  DUnitX.DUnitCompatibility,
   System.Generics.Collections,
   Utils.Arrays.Helper;
 
@@ -24,24 +25,29 @@ type
 
 { TArrayHelperTests }
 
-  TArrayHelperTests = class(TTestCase)
-  private const
+  [TestFixture]
+  TArrayHelperTests = class
+  strict private const
     TestValue1        = 'test value 1';
     TestValue2        = 'test value 2';
     TestValue3        = 'test value 3';
     TestValueNotFound = 'not found';
 
-  private
+  strict private
     FArray: TArray<string>;
 
-  strict protected
-    procedure SetUp; override;
+  public
+    [Setup]
+    procedure SetUp;
 
-  published
+    [Test]
     procedure binary_search_should_return_index_of_item_in_sorted_array;
+    [Test]
     procedure binary_search_should_not_return_index_of_item_in_sorted_array_if_item_not_found;
 
+    [Test]
     procedure search_should_return_index_of_item_in_array;
+    [Test]
     procedure search_should_not_return_index_of_item_in_array_if_item_not_found;
   end;
 
@@ -69,8 +75,8 @@ begin
     ActualIndex
   );
 
-  CheckFalse(ActualResult);
-  CheckEquals(-1, ActualIndex);
+  Assert.isFalse(ActualResult);
+  Assert.AreEqual(-1, ActualIndex);
 end;
 
 procedure TArrayHelperTests.binary_search_should_return_index_of_item_in_sorted_array;
@@ -90,8 +96,8 @@ begin
     ActualIndex
   );
 
-  CheckTrue(ActualResult);
-  CheckEquals(1, ActualIndex);
+  Assert.IsTrue(ActualResult);
+  Assert.AreEqual(1, ActualIndex);
 end;
 
 procedure TArrayHelperTests.search_should_not_return_index_of_item_in_array_if_item_not_found;
@@ -109,8 +115,8 @@ begin
     ActualIndex
   );
 
-  CheckFalse(ActualResult);
-  CheckEquals(-1, ActualIndex);
+  Assert.IsFalse(ActualResult);
+  Assert.AreEqual(-1, ActualIndex);
 end;
 
 procedure TArrayHelperTests.search_should_return_index_of_item_in_array;
@@ -128,8 +134,8 @@ begin
     ActualIndex
   );
 
-  CheckTrue(ActualResult);
-  CheckEquals(2, ActualIndex);
+  Assert.IsTrue(ActualResult);
+  Assert.AreEqual(2, ActualIndex);
 end;
 
 procedure TArrayHelperTests.SetUp;
@@ -138,6 +144,6 @@ begin
 end;
 
 initialization
-  RegisterTest(TArrayHelperTests.Suite);
+  TDUnitX.RegisterTestFixture(TArrayHelperTests);
 
 end.

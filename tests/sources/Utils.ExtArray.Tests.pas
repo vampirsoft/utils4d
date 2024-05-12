@@ -17,46 +17,61 @@ interface
 
 uses
   {$IFDEF USE_QUICK_LIB}Quick.Arrays{$ELSE}Utils.ExtArray{$ENDIF},
-  TestFramework;
+  DUnitX.TestFramework,
+  DUnitX.DUnitCompatibility;
 
 type
-  TXArrayTests = class(TTestCase)
-  private const
+
+{ TXArrayTests }
+
+  [TestFixture]
+  TXArrayTests = class
+  strict private const
     TestValue1        = 'test value 1';
     TestValue2        = 'test value 2';
     TestValue3        = 'test value 3';
     TestValueNotFound = 'not found';
 
-  private
+  strict private
     FArray: TXArray<string>;
 
-  strict protected
-    procedure SetUp; override;
+  public
+    [Setup]
+    procedure SetUp;
 
-  published
+    [Test]
     procedure add_should_append_item_into_end_of_array_and_return_index_of_item;
 
+    [Test]
     procedure contains_should_return_true_if_array_has_item;
+    [Test]
     procedure contains_should_return_false_if_array_has_no_item;
 
+    [Test]
     procedure index_of_should_return_index_of_item_if_array_has_an_item;
+    [Test]
     procedure index_of_should_return_neg_one_if_array_has_no_item;
 
+    [Test]
     procedure enumerator_should_each_all_items;
 
+    [Test]
     procedure insert_should_add_item_in_concrate_position;
 
+    [Test]
     procedure delete_should_remove_item_by_index;
 
+    [Test]
     procedure remove_should_remove_item;
 
+    [Test]
     procedure set_item_should_change_item_in_concrate_position;
   end;
 
 implementation
 
 uses
-  System.SysUtils(*, System.Generics.Defaults*), System.Generics.Collections;
+  System.SysUtils, System.Generics.Collections;
 
 { TXArrayTests }
 
@@ -64,32 +79,32 @@ procedure TXArrayTests.add_should_append_item_into_end_of_array_and_return_index
 begin
   const ActualIndex = FArray.Add(TestValue3);
 
-  CheckEquals(2, ActualIndex);
+  Assert.AreEqual(2, ActualIndex);
 end;
 
 procedure TXArrayTests.contains_should_return_false_if_array_has_no_item;
 begin
   const Actual = FArray.Contains(TestValueNotFound);
 
-  CheckFalse(Actual);
+  Assert.IsFalse(Actual);
 end;
 
 procedure TXArrayTests.contains_should_return_true_if_array_has_item;
 begin
   const Actual = FArray.Contains(TestValue2);
 
-  CheckTrue(Actual);
+  Assert.IsTrue(Actual);
 end;
 
 procedure TXArrayTests.delete_should_remove_item_by_index;
 begin
-  CheckEquals(2, FArray.Count);
-  CheckEquals(TestValue2, FArray[0]);
+  Assert.AreEqual(2, FArray.Count);
+  Assert.AreEqual(TestValue2, FArray[0]);
 
   FArray.Delete(0);
 
-  CheckEquals(1, FArray.Count);
-  CheckEquals(TestValue1, FArray[0]);
+  Assert.AreEqual(1, FArray.Count);
+  Assert.AreEqual(TestValue1, FArray[0]);
 end;
 
 procedure TXArrayTests.enumerator_should_each_all_items;
@@ -101,7 +116,7 @@ begin
       ActualList.Add(Item);
     end;
 
-    CheckEquals(string.Join(',', FArray.AsArray), string.Join(',', ActualList.ToArray));
+    Assert.AreEqual(string.Join(',', FArray.AsArray), string.Join(',', ActualList.ToArray));
   finally
     FreeAndNil(ActualList);
   end;
@@ -111,36 +126,36 @@ procedure TXArrayTests.index_of_should_return_index_of_item_if_array_has_an_item
 begin
   const ActualIndex = FArray.IndexOf(TestValue1);
 
-  CheckEquals(1, ActualIndex);
+  Assert.AreEqual(1, ActualIndex);
 end;
 
 procedure TXArrayTests.index_of_should_return_neg_one_if_array_has_no_item;
 begin
   const ActualIndex = FArray.IndexOf(TestValueNotFound);
 
-  CheckEquals(-1, ActualIndex);
+  Assert.AreEqual(-1, ActualIndex);
 end;
 
 procedure TXArrayTests.insert_should_add_item_in_concrate_position;
 begin
-  CheckEquals(2, FArray.Count);
-  CheckEquals(TestValue1, FArray[1]);
+  Assert.AreEqual(2, FArray.Count);
+  Assert.AreEqual(TestValue1, FArray[1]);
 
   FArray.Insert(TestValue3, 1);
 
-  CheckEquals(3, FArray.Count);
-  CheckEquals(TestValue3, FArray[1]);
+  Assert.AreEqual(3, FArray.Count);
+  Assert.AreEqual(TestValue3, FArray[1]);
 end;
 
 procedure TXArrayTests.remove_should_remove_item;
 begin
-  CheckEquals(2, FArray.Count);
-  CheckEquals(TestValue2, FArray[0]);
+  Assert.AreEqual(2, FArray.Count);
+  Assert.AreEqual(TestValue2, FArray[0]);
 
   FArray.Remove(TestValue2);
 
-  CheckEquals(1, FArray.Count);
-  CheckEquals(TestValue1, FArray[0]);
+  Assert.AreEqual(1, FArray.Count);
+  Assert.AreEqual(TestValue1, FArray[0]);
 end;
 
 procedure TXArrayTests.SetUp;
@@ -150,14 +165,14 @@ end;
 
 procedure TXArrayTests.set_item_should_change_item_in_concrate_position;
 begin
-  CheckEquals(TestValue1, FArray[1]);
+  Assert.AreEqual(TestValue1, FArray[1]);
 
   FArray[1] := TestValue3;
   
-  CheckEquals(TestValue3, FArray[1]);
+  Assert.AreEqual(TestValue3, FArray[1]);
 end;
 
 initialization
-  RegisterTest(TXArrayTests.Suite);
+  TDUnitX.RegisterTestFixture(TXArrayTests);
 
 end.

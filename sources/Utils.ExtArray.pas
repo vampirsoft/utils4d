@@ -28,18 +28,23 @@ type
     strict private
       FArray: ^TArray<T>;
       FIndex: Integer;
+
     strict protected
       function DoGetCurrent: T; override;
       function DoMoveNext: Boolean; override;
+
     public
       constructor Create(var Arr: TArray<T>);
     end;
-  private type
+
+  strict private type
     ArrayOfT = array of T;
     PArrayOfT = ^ArrayOfT;
-  private
+
+  strict private
     FArray: TArray<T>;
-  private
+
+  strict private
     function GetItem(Index: Integer): T; inline;
     function GetCount: Integer; inline;
     function GetCapacity: Integer; inline;
@@ -55,9 +60,11 @@ type
     procedure Insert(const Item: T; const Index: Integer); inline;
     procedure Delete(const Index: Integer); inline;
     procedure Remove(const Item: T); inline;
+
   public
     class operator Implicit(const Value: TXArray<T>) : TArray<T>; inline;
     class operator Implicit(const Value: TArray<T>) : TXArray<T>; inline;
+
   public
     property Items[Index: Integer]: T read GetItem write SetItem; default;
     property Count: Integer read GetCount;
