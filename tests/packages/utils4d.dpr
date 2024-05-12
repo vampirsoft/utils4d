@@ -18,7 +18,15 @@ program utils4d;
 {$ENDIF}
 
 uses
-  DUnitTestRunner,
+  System.SysUtils,
+{$IFDEF CONSOLE_TESTRUNNER}
+  DUnitX.Loggers.Console,
+  DUnitX.Loggers.Xml.NUnit,
+{$ELSE ~ CONSOLE_TESTRUNNER}
+  Vcl.Forms,
+  DUnitX.Loggers.GUI.VCL,
+{$ENDIF CONSOLE_TESTRUNNER}
+  DUnitX.TestFramework,
   Utils.ExtArray in '..\..\sources\Utils.ExtArray.pas',
   Utils.Arrays.Helper in '..\..\sources\Utils.Arrays.Helper.pas',
   Utils.ExtArray.Tests in '..\sources\Utils.ExtArray.Tests.pas',
@@ -28,9 +36,48 @@ uses
 
 begin
   ReportMemoryLeaksOnShutdown := True;
-  DUnitTestRunner.RunRegisteredTests;
 {$IFDEF CONSOLE_TESTRUNNER}
-  Write('Для завершения нажмите "ENTER"');
-  Readln;
+  try
+    //Check command line options, will exit if invalid
+    TDUnitX.CheckCommandLine;
+    //Create the test runner
+    const Runner = TDUnitX.CreateRunner;
+    //Tell the runner to use RTTI to find Fixtures
+    Runner.UseRTTI := True;
+    //When true, Assertions must be made during tests;
+    Runner.FailsOnNoAsserts := False;
+
+    //tell the runner how we will log things
+    //Log to the console window if desired
+    if TDUnitX.Options.ConsoleMode <> TDunitXConsoleMode.Off then
+    begin
+      const Logger = TDUnitXConsoleLogger.Create(TDUnitX.Options.ConsoleMode = TDunitXConsoleMode.Quiet);
+      Runner.AddLogger(Logger);
+    end;
+    //Generate an NUnit compatible XML File
+    const NUnitLogger = TDUnitXXMLNUnitFileLogger.Create(TDUnitX.Options.XMLOutputFile);
+    Runner.AddLogger(NUnitLogger);
+
+    //Run tests
+    const Results = Runner.Execute;
+    if not Results.AllPassed then
+      System.ExitCode := EXIT_ERRORS;
+
+    TDUnitX.Options.ExitBehavior := TDUnitXExitBehavior.Pause;
+
+    //We don't want this happening when running under CI.
+    if TDUnitX.Options.ExitBehavior = TDUnitXExitBehavior.Pause then
+    begin
+      System.Write('Done.. press <Enter> key to quit.');
+      System.Readln;
+    end;
+  except
+    on E: Exception do
+      System.Writeln(E.ClassName, ': ', E.Message);
+  end;
+{$ELSE ~ CONSOLE_TESTRUNNER}
+  Application.Initialize;
+  Application.CreateForm(TGUIVCLTestRunner, GUIVCLTestRunner);
+  Application.Run;
 {$ENDIF ~ CONSOLE_TESTRUNNER}
 end.
