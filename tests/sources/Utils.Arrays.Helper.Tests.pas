@@ -17,7 +17,6 @@ interface
 
 uses
   DUnitX.TestFramework,
-  DUnitX.DUnitCompatibility,
   System.Generics.Collections,
   Utils.Arrays.Helper;
 

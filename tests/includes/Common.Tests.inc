@@ -16,12 +16,22 @@
 // необходимо включить эту опцию
 //{$DEFINE USE_QUICK_LIB}
 
-// Тесты в коносле
-{$DEFINE CONSOLE_TESTRUNNER}
+// Управление исполнителями тестов, включать можно только один одновременно.
+// Если ни один не включен, тесты будут исполняться в косольном режиме
+//{$DEFINE USE_VCL_TESTRUNNER}
+//{$DEFINE USE_MOBILE_TESTRUNNER}
 
 // ВНИМАНИЕ!!!
 // =============================================================================
-// НАСТРОЙКИ БИБЛИОТЕКИ
+// КОД СЛЕДУЮЩИЙ НИЖЕ НЕ ПРЕДНАЗНАЧЕН ДЛЯ ИЗМЕНЕНИЯ ПРОГРАММИСТОМ И
+// СОДЕРЖИТ КРИТИЧЕСКИЕ НАСТРОЙКИ
+
+{$IF NOT DEFINED(MSWINDOWS)}
+  {$UNDEF USE_VCL_TESTRUNNER}
+{$ENDIF MSWINDOWS}
+{$IF NOT (DEFINED(USE_VCL_TESTRUNNER) OR DEFINED(USE_MOBILE_TESTRUNNER))}
+  {$DEFINE CONSOLE_TESTRUNNER}
+{$ENDIF CONSOLE_TESTRUNNER}
 
 {$INCLUDE Common.inc}
 

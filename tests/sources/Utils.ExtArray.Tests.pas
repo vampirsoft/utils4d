@@ -17,8 +17,7 @@ interface
 
 uses
   {$IFDEF USE_QUICK_LIB}Quick.Arrays{$ELSE}Utils.ExtArray{$ENDIF},
-  DUnitX.TestFramework,
-  DUnitX.DUnitCompatibility;
+  DUnitX.TestFramework;
 
 type
 
