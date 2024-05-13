@@ -1,5 +1,13 @@
 # История изменений
 
+## 1.4.0 (от 14 мая 2024 года)
+### Добавлено
+- Поддержка мобильного исполнителя тестов из [DUnitX](https://github.com/VSoftTechnologies/DUnitX)
+
+
+
+
+
 ## 1.3.0 (от 13 мая 2024 года)
 ### Изменено
 - Теперь тесты написаны на базе [DUnitX](https://github.com/VSoftTechnologies/DUnitX)

@@ -22,10 +22,15 @@ uses
 {$IFDEF CONSOLE_TESTRUNNER}
   DUnitX.Loggers.Console,
   DUnitX.Loggers.Xml.NUnit,
-{$ELSE ~ CONSOLE_TESTRUNNER}
+{$ENDIF CONSOLE_TESTRUNNER}
+{$IFDEF USE_VCL_TESTRUNNER}
   Vcl.Forms,
   DUnitX.Loggers.GUI.VCL,
-{$ENDIF CONSOLE_TESTRUNNER}
+{$ENDIF USE_VCL_TESTRUNNER}
+{$IFDEF USE_MOBILE_TESTRUNNER}
+  FMX.Forms,
+  DUNitX.Loggers.MobileGUI,
+{$ENDIF USE_MOBILE_TESTRUNNER}
   DUnitX.TestFramework,
   Utils.ExtArray in '..\..\sources\Utils.ExtArray.pas',
   Utils.Arrays.Helper in '..\..\sources\Utils.Arrays.Helper.pas',
@@ -63,21 +68,23 @@ begin
     if not Results.AllPassed then
       System.ExitCode := EXIT_ERRORS;
 
-    TDUnitX.Options.ExitBehavior := TDUnitXExitBehavior.Pause;
-
     //We don't want this happening when running under CI.
-    if TDUnitX.Options.ExitBehavior = TDUnitXExitBehavior.Pause then
-    begin
-      System.Write('Done.. press <Enter> key to quit.');
-      System.Readln;
-    end;
+    TDUnitX.Options.ExitBehavior := TDUnitXExitBehavior.Pause;
+    System.Write('Done... press <Enter> key to quit.');
+    System.Readln;
   except
     on E: Exception do
       System.Writeln(E.ClassName, ': ', E.Message);
   end;
-{$ELSE ~ CONSOLE_TESTRUNNER}
+{$ENDIF CONSOLE_TESTRUNNER}
+{$IFDEF USE_VCL_TESTRUNNER}
   Application.Initialize;
   Application.CreateForm(TGUIVCLTestRunner, GUIVCLTestRunner);
   Application.Run;
-{$ENDIF ~ CONSOLE_TESTRUNNER}
+{$ENDIF USE_VCL_TESTRUNNER}
+{$IFDEF USE_MOBILE_TESTRUNNER}
+  Application.Initialize;
+  Application.CreateForm(TMobileGUITestRunner, MobileGUITestRunner);
+  Application.Run;
+{$ENDIF USE_MOBILE_TESTRUNNER}
 end.
