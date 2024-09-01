@@ -182,11 +182,13 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
+        <DCCReference Include="..\sources\DUnitXTestRunner.pas"/>
         <DCCReference Include="..\..\sources\Utils.ExtArray.pas"/>
         <DCCReference Include="..\..\sources\Utils.Arrays.Helper.pas"/>
         <DCCReference Include="..\sources\Utils.ExtArray.Tests.pas"/>
         <DCCReference Include="..\sources\Utils.Arrays.Helper.Tests.pas"/>
         <None Include="..\includes\Common.Tests.inc"/>
+        <None Include="..\includes\Utils4D.Tests.inc"/>
         <None Include="..\..\includes\Common.inc"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
@@ -242,6 +244,12 @@
                     </Platform>
                 </DeployFile>
                 <DeployFile LocalName="..\includes\Common.Tests.inc" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\includes\Utils4D.Tests.inc" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
