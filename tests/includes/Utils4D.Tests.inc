@@ -2,20 +2,19 @@
 //*****************************************************************************//
 //* Project      : localizations                                              *//
 //* Latest Source: https://github.com/vampirsoft/localizations                *//
-//* Unit Name    : Common.Tests.inc                                           *//
+//* Unit Name    : Utils4D.Tests.inc                                          *//
 //* Author       : Сергей (LordVampir) Дворников                              *//
 //* Copyright 2024 LordVampir (https://github.com/vampirsoft)                 *//
 //* Licensed under MIT                                                        *//
 //*****************************************************************************//
 /////////////////////////////////////////////////////////////////////////////////
 
-{$IF NOT DEFINED(COMMON_TESTS_INC)}
-{$DEFINE COMMON_TESTS_INC}
+{$IF NOT DEFINED(UTILS_4_D_TESTS_INC)}
+{$DEFINE UTILS_4_D_TESTS_INC}
 
-// Управление исполнителями тестов, включать можно только один одновременно.
-// Если ни один не включен, тесты будут исполняться в косольном режиме
-//{$DEFINE USE_VCL_TESTRUNNER}
-//{$DEFINE USE_MOBILE_TESTRUNNER}
+// Если используется QuickLib (https://github.com/exilon/QuickLib),
+// необходимо включить эту опцию
+//{$DEFINE USE_QUICK_LIB}
 
 // ВНИМАНИЕ!!!
 // =============================================================================
@@ -29,6 +28,6 @@
   {$DEFINE CONSOLE_TESTRUNNER}
 {$ENDIF CONSOLE_TESTRUNNER}
 
-{$INCLUDE Common.inc}
+{$INCLUDE Common.Tests.inc}
 
-{$ENDIF ~ COMMON_TESTS_INC}
+{$ENDIF ~ UTILS_4_D_TESTS_INC}
