@@ -11,7 +11,7 @@
 
 unit Utils.ExtArray.Tests;
 
-{$INCLUDE Common.Tests.inc}
+{$INCLUDE Utils4D.Tests.inc}
 
 interface
 
